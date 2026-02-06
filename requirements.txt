@@ -1,0 +1,5 @@
+skyfield
+streamlit 
+numpy 
+matplotlib
+manim
