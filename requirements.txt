@@ -2,4 +2,4 @@ skyfield
 streamlit 
 numpy 
 matplotlib
-manim
+# manim
