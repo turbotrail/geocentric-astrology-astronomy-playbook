@@ -30,6 +30,13 @@ NAKSHATRAS = [
     "பூரட்டாதி", "உத்திரட்டாதி", "ரேவதி"
 ]
 
+# Raasi Names (Zodiac Signs)
+RAASI_NAMES = [
+    "மேஷம்", "ரிஷபம்", "மிதுனம்", "கடகம்", 
+    "சிம்மம்", "கன்னி", "துலாம்", "விருச்சிகம்", 
+    "தனுசு", "மகரம்", "கும்பம்", "மீனம்"
+]
+
 # Tithi Names (Root)
 TITHI_ROOTS = [
     "பிரதமை", "துவிதியை", "திருதியை", "சதுர்த்தி", "பஞ்சமி",
@@ -112,6 +119,9 @@ def get_geocentric_data(dt):
 
 def nakshatra_index(moon_lon):
     return int(moon_lon // NAK_SIZE)
+
+def raasi_index(lon):
+    return int(lon // 30)
 
 def tithi_index(moon_lon, sun_lon):
     phase = (moon_lon - sun_lon) % 360
@@ -254,18 +264,20 @@ def draw_moon_phase(phase_angle_deg):
 # ----------------------
 # State display
 # ----------------------
-col1, col2, col3, col4, col5 = st.columns(5)
+col1, col2, col3, col4, col5, col6 = st.columns(6)
 # Calculate phase angle (0-360)
 phase_ang = (moon_lon_wrapped - sun_lon_wrapped) % 360
+raasi_i = raasi_index(moon_lon_wrapped)
 
 col1.metric("Nakshatra", NAKSHATRAS[nak_i])
-col2.metric("Tithi", f"{tithi_i}") 
-col3.metric("Moon Phase", phase_name) # Consider localizing phase_name too if function not updated
-col4.metric("Moon Longitude", f"{moon_lon_wrapped:.2f}°")
-col5.metric("Angle (Moon-Sun)", f"{phase_ang:.2f}°")
+col2.metric("Raasi (Sign)", RAASI_NAMES[raasi_i])
+col3.metric("Tithi", f"{tithi_i}") 
+col4.metric("Moon Phase", phase_name) 
+col5.metric("Moon Longitude", f"{moon_lon_wrapped:.2f}°")
+col6.metric("Angle (Moon-Sun)", f"{phase_ang:.2f}°")
 
-# Show Moon Visual in col3
-with col3:
+# Show Moon Visual in col4
+with col4:
     moon_fig = draw_moon_phase(phase_ang)
     st.pyplot(moon_fig)
 
